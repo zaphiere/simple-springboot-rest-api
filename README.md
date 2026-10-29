@@ -334,4 +334,17 @@ This is deliberate: the repository is primarily a reusable learning and coding-a
 
 ## Potential Improvements
 
-Possible
+Possible extensions for future practice include:
+
+- Add more service unit tests.
+- Add controller tests using Spring MVC test support.
+- Add integration tests with a dedicated test database.
+- Add pagination and sorting to collection endpoints.
+- Improve consistency across error response formats.
+- Add API documentation using OpenAPI/Swagger.
+- Introduce database migrations with Flyway or Liquibase.
+- Add authentication and authorization if required by a future assessment.
+
+## License
+
+No license has been specified. Add a `LICENSE` file if you intend to distribute this project under a particular open-source license.
