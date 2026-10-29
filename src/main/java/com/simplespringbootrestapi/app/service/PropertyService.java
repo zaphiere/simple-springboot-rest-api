@@ -16,6 +16,8 @@ import com.simplespringbootrestapi.app.model.Property;
 import com.simplespringbootrestapi.app.repository.ProjectRepository;
 import com.simplespringbootrestapi.app.repository.PropertyRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PropertyService {
 
@@ -54,14 +56,16 @@ public class PropertyService {
 		return mapper.toResponse(property);
 	}
 
+	@Transactional
 	public PropertyResponse add(PropertyRequest request) {
 		Property property = new Property();
 		Project project = findProject(request.projectId());
-		Property saveProperty = saveProperty(project, property, request);
+		Property savedProperty = saveProperty(project, property, request);
 		
-		return mapper.toResponse(saveProperty);
+		return mapper.toResponse(savedProperty);
 	}
 
+	@Transactional
 	public PropertyResponse update(int id, PropertyRequest request) {
 		Property property = findProperty(id);
 		
@@ -98,6 +102,7 @@ public class PropertyService {
 				));
 	}
 
+	@Transactional
 	public void delete(Property property) {
 		repo.delete(property);
 	}
