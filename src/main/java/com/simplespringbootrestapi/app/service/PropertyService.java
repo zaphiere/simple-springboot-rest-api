@@ -55,24 +55,43 @@ public class PropertyService {
 	}
 
 	public PropertyResponse add(PropertyRequest request) {
-		System.out.println("Service");
 		Property property = new Property();
-		Project project = projectRepo.findById(request.projectId())
+		Project project = findProject(request.projectId());
+		Property saveProperty = saveProperty(project, property, request);
+		
+		return mapper.toResponse(saveProperty);
+	}
+
+	public PropertyResponse update(int id, PropertyRequest request) {
+		Property property = repo.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(
-						HttpStatus.BAD_REQUEST,
-						"Project not found"
+						HttpStatus.NOT_FOUND,
+						"Property Not Found"
 				));
 		
+		Project project = findProject(request.projectId());
 		
+		Property saveProperty = saveProperty(project, property, request);
+		
+		return mapper.toResponse(saveProperty);
+	}
+
+	private Property saveProperty(Project project, Property property, PropertyRequest request) {
 		property.setProject(project);
 		property.setLabel(request.label());
 		property.setStatus(request.status());
 		property.setPrice(request.price());
 		property.setTimestamps(LocalDateTime.now());
 		
-		Property saveProperty = repo.save(property);
-		
-		return mapper.toResponse(saveProperty);
+		return repo.save(property);
+	}
+
+	private Project findProject( Integer projectId) {
+		return projectRepo.findById(projectId)
+				.orElseThrow(() -> new ResponseStatusException(
+						HttpStatus.BAD_REQUEST,
+						"Project not found"
+				));
 	}
 
 }
