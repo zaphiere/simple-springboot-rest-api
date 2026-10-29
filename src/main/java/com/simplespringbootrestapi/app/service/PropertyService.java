@@ -63,17 +63,21 @@ public class PropertyService {
 	}
 
 	public PropertyResponse update(int id, PropertyRequest request) {
-		Property property = repo.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(
-						HttpStatus.NOT_FOUND,
-						"Property Not Found"
-				));
+		Property property = findProperty(id);
 		
 		Project project = findProject(request.projectId());
 		
 		Property saveProperty = saveProperty(project, property, request);
 		
 		return mapper.toResponse(saveProperty);
+	}
+
+	public Property findProperty(int id) {
+		return repo.findById(id)
+				.orElseThrow(() -> new ResponseStatusException(
+						HttpStatus.NOT_FOUND,
+						"Property Not Found"
+				));
 	}
 
 	private Property saveProperty(Project project, Property property, PropertyRequest request) {
@@ -86,12 +90,16 @@ public class PropertyService {
 		return repo.save(property);
 	}
 
-	private Project findProject( Integer projectId) {
+	private Project findProject(Integer projectId) {
 		return projectRepo.findById(projectId)
 				.orElseThrow(() -> new ResponseStatusException(
 						HttpStatus.BAD_REQUEST,
 						"Project not found"
 				));
+	}
+
+	public void delete(Property property) {
+		repo.delete(property);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.simplespringbootrestapi.app.dto.PropertyRequest;
 import com.simplespringbootrestapi.app.dto.PropertyResponse;
+import com.simplespringbootrestapi.app.model.Property;
 import com.simplespringbootrestapi.app.service.PropertyService;
 
 import jakarta.validation.Valid;
@@ -65,6 +67,17 @@ public class PropertyController {
 		PropertyResponse response = service.update(id, request);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/properties/{id}")
+	public ResponseEntity<String> delete(@PathVariable int id) {
+		Property property = service.findProperty(id);
+		
+		if (property != null) {
+			service.delete(property);
+		}
+		
+		return new ResponseEntity<>("Property Deleted", HttpStatus.OK);
 	}
 	
 }
