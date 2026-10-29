@@ -16,7 +16,7 @@ public record PropertyRequest(
 		Integer projectId,
 		
 		@NotBlank(message = "Label is required")
-		@Size(max = 15, message = "Label must be more than 15 characters")
+		@Size(min = 15, message = "Label must be more than 15 characters")
 		String label,
 		
 		@NotNull(message = "Status is required")
