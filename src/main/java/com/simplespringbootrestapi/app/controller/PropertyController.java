@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,10 +52,19 @@ public class PropertyController {
 	
 	@PostMapping("/properties")
 	public ResponseEntity<PropertyResponse> create(@Valid @RequestBody PropertyRequest request) {
-		System.out.println("Controller");
 		PropertyResponse response = service.add(request);
 		
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+	
+	@PutMapping("/properties/{id}")
+	public ResponseEntity<PropertyResponse> update(
+			@PathVariable int id,
+			@Valid @RequestBody PropertyRequest request
+	) {
+		PropertyResponse response = service.update(id, request);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 }
